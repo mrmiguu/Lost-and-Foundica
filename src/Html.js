@@ -32,7 +32,7 @@ function Html({ phaser, onResize }) {
         if (phaser.player) {
           // if (phaser.player.x !== lastX || phaser.player.y !== lastY) {
           let vx = phaser.player.x - phaser.camera.scrollX - 33 //- phaser.player.width / 2
-          let vy = phaser.player.y - phaser.camera.scrollY - 95 //- phaser.player.height / 2 + 13
+          let vy = phaser.player.y - phaser.camera.scrollY - 70 //- phaser.player.height / 2 + 13
 
           setVideoXY([vx, vy])
           //   setLastXY([phaser.player.x, phaser.player.y])
