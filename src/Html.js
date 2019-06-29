@@ -4,7 +4,7 @@ import styles from './styles/Html.module.scss'
 
 function Html({ phaser, onResize }) {
 
-  if (!phaser) return null
+  if (!phaser || !phaser.player) return null
 
   useEffect(
     () => {
@@ -22,7 +22,7 @@ function Html({ phaser, onResize }) {
     []
   )
 
-  let [[vx, vy], setVideoXY] = useState([0, 0])
+  let [videoXY, setVideoXY] = useState([0, 0])
   // let [[lastX, lastY], setLastXY] = useState([0, 0])
 
   useEffect(
@@ -68,12 +68,10 @@ function Html({ phaser, onResize }) {
       </div> */}
       <Cam
         camRef={vidRef}
-        style={{
-          transform: `translate(${vx}px, ${vy}px) scale(-1, 1)`
-        }}
+        xy={videoXY}
         hat={'🧢'}
         anim={'walk'}
-      // flip={phaser.cursors.left.isDown}
+        flip={phaser.player.flipX}
       />
     </div>
   )

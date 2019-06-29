@@ -12,7 +12,7 @@ let hats = {
   '⛑': styles.MedicHat,
 }
 
-function Cam({ camRef, style, anim, hat, flip, muted, onStream }) {
+function Cam({ camRef, xy, anim, hat, flip, muted, onStream }) {
   let { frames, rate } = anims[anim]
 
   let [frame, setFrame] = useState(0)
@@ -43,8 +43,10 @@ function Cam({ camRef, style, anim, hat, flip, muted, onStream }) {
 
   return (
     <div
-      className={cx(styles.Cam, flip && styles.Flip)}
-      style={style}
+      className={cx(styles.Cam)}
+      style={{
+        transform: `translate(${xy[0]}px, ${xy[1]}px) ${flip ? 'scale(-1,1)' : ''}`,
+      }}
       hidden={!camRef || !camRef.current || !camRef.current.srcObject}
     >
       {/* <img
@@ -70,7 +72,12 @@ function Cam({ camRef, style, anim, hat, flip, muted, onStream }) {
         )
       } */}
 
-      <div className={cx(styles.Crop, flip || styles.Flip)}>
+      <div
+        className={styles.Crop}
+        style={{
+          transform: flip ? 'scale(-1, 1)' : 'scale(-1, 1)',
+        }}
+      >
         <video
           ref={camRef}
           autoPlay
@@ -90,51 +97,5 @@ function Cam({ camRef, style, anim, hat, flip, muted, onStream }) {
 
   )
 }
-
-/* function useMedia(facingMode, audio, connRef) {
-  let [stream, setStream] = useState()
-
-  facingMode = facingMode || 'user'
-
-  useEffect(() => {
-
-    let constr = {
-      video: { facingMode },
-      audio,
-    }
-
-    if (!navigator.mediaDevices) {
-      return alert(`This browser does not support WebRTC. Try using the original browser for this device.`)
-    }
-
-    navigator.mediaDevices
-      .getUserMedia(constr)
-      .then(setStream)
-
-  }, [facingMode, audio])
-
-  // if (!connRef.current) return alert(`RTCPeerConnection lost.`)
-
-  // stream.getTracks().forEach(track => {
-  //   const sender = connRef.current.getSenders()
-  //     .find(sender => sender.track.kind === track.kind)
-
-  //   if (sender) {
-  //     console.log(`replacing track! (${track.kind})`)
-  //     sender.replaceTrack(track)
-  //   } else {
-  //     console.log(`adding track! (${track.kind})`)
-  //     connRef.current.addTrack(track, stream)
-  //   }
-
-  // })
-
-  return stream
-} */
-
-// function nextFrame(arr, dt, off) {
-//   let t = Date.now() - (off || 0)
-//   return ((t - (t % dt)) / dt) % arr.length
-// }
 
 export default Cam
