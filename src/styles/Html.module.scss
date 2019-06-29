@@ -1,0 +1,22 @@
+#Video {
+  position: absolute;
+  width: 30px;
+  height: 40px;
+}
+
+#Crop {
+  width: 30px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 32px;
+  // filter: drop-shadow(0 1px 1px black);
+  mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+}
+
+#Crop video {
+  position: relative;
+  height: 200%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
