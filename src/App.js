@@ -9,6 +9,7 @@ function App() {
 
   return (
     <div>
+
       <Html
         phaser={phaser}
         onResize={setSize}
@@ -18,6 +19,7 @@ function App() {
         size={size}
         onPhaser={setPhaser}
       />
+
     </div>
   )
 }

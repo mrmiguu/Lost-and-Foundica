@@ -12,10 +12,11 @@ let hats = {
   '⛑': styles.MedicHat,
 }
 
-function Cam({ camRef, xy, anim, hat, flip, muted, onStream }) {
+function Cam({ camRef, xy, anim, hat, flip, muted, onPlay, onStream }) {
   let { frames, rate } = anims[anim]
 
   let [frame, setFrame] = useState(0)
+  let [isPlaying, setIsPlaying] = useState()
   // let camRef = useRef()
   // let stream = useMedia('user', true)
 
@@ -82,12 +83,16 @@ function Cam({ camRef, xy, anim, hat, flip, muted, onStream }) {
           ref={camRef}
           autoPlay
           playsInline
+          onPlay={() => {
+            setIsPlaying(true)
+            onPlay()
+          }}
         // muted={muted}
         // hidden
         />
       </div>
 
-      <span className={hats[hat]}>
+      <span className={hats[hat]} hidden={!isPlaying}>
         {hat}
       </span>
 

@@ -5,11 +5,9 @@ import tuxemonTown from './assets/tilemaps/tuxemon-town.json'
 import atlasPng from './assets/atlas/atlas.png'
 import atlasJson from './assets/atlas/atlas.json'
 
-class Phaser extends Game {
-  constructor({
-    size: [width, height],
-  }) {
-    super({
+function Phaser({ size: [width, height] }) {
+  return new Promise(onScene => {
+    let g = new Game({
       type: AUTO,
       width,
       height,
@@ -20,18 +18,19 @@ class Phaser extends Game {
           gravity: { y: 1000 }
         }
       },
-      scene: MyScene,
     })
-  }
 
-  get player() { return this.scene.scenes[0].player }
-  get camera() { return this.scene.scenes[0].camera }
-  get cursors() { return this.scene.scenes[0].cursors }
+    g.scene.add('MyScene', MyScene, true, { onScene })
+  })
 }
 
 class MyScene extends Scene {
   constructor(config) {
     super(config)
+  }
+
+  init({ onScene }) {
+    this.onScene = onScene
   }
 
   preload() {
@@ -84,6 +83,7 @@ class MyScene extends Scene {
       .sprite(spawnPoint.x + 200, spawnPoint.y - 1010, 'atlas', 'misa-front')
       .setSize(30, 40)
       .setOffset(0, 24)
+      .setVisible(false)
     // .setMaxVelocity(1000, 1000)
 
     // Watch the this.player and worldLayer for collisions, for the duration of the scene:
@@ -171,20 +171,7 @@ class MyScene extends Scene {
       })
     })
 
-    // let video = document.querySelector('#test')//document.createElement('video')
-    // // video.id = 'test'
-    // video.autoplay = true
-    // // document.body.append(video)
-    // navigator.mediaDevices.getUserMedia({
-    //   video: { facingMode: 'user' },
-    //   // audio: true,
-    // }).then(stream => video.srcObject = stream)
-
-    // this.frameRequestCallback = this.frameRequestCallback.bind(this)
-    // requestAnimationFrame(this.frameRequestCallback)
-
-    // this.lastX = 0
-    // this.lastY = 0
+    this.onScene(this)
   }
 
   update() {

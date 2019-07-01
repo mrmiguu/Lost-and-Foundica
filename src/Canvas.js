@@ -28,7 +28,7 @@ function Canvas({ size, onPhaser }) {
   useEffect(
     () => {
       console.log(`THE ENTIRETY OF PHASER HAS BEEN INITIALIZED`)
-      setPhaser(new Phaser({ size }))
+      Phaser({ size }).then(setPhaser)
     },
     []
   )

@@ -3,8 +3,7 @@ import Cam from './Cam'
 import styles from './styles/Html.module.scss'
 
 function Html({ phaser, onResize }) {
-
-  if (!phaser || !phaser.player) return null
+  if (!phaser) return null
 
   useEffect(
     () => {
@@ -13,11 +12,21 @@ function Html({ phaser, onResize }) {
     []
   )
 
+  let [stream, setStream] = useState()
+
   useEffect(
     () => {
+      vidRef.current.srcObject = stream
+    },
+    [stream]
+  )
+
+  useEffect(
+    () => {
+      console.log(`getUserMedia!`)
       navigator.mediaDevices.getUserMedia({
         video: true,
-      }).then(stream => vidRef.current.srcObject = stream)
+      }).then(setStream)
     },
     []
   )
@@ -29,19 +38,19 @@ function Html({ phaser, onResize }) {
     () => {
       function animationFrame(t) {
 
-        if (phaser.player) {
-          // if (phaser.player.x !== lastX || phaser.player.y !== lastY) {
-          let vx = phaser.player.x - phaser.camera.scrollX - 33 //- phaser.player.width / 2
-          let vy = phaser.player.y - phaser.camera.scrollY - 70 //- phaser.player.height / 2 + 13
+        // if (phaser.player.x !== lastX || phaser.player.y !== lastY) {
+        // console.log(JSON.stringify(Object.keys(phaser)))
+        let vx = phaser.player.x - phaser.camera.scrollX - 33 //- phaser.player.width / 2
+        let vy = phaser.player.y - phaser.camera.scrollY - 70 //- phaser.player.height / 2 + 13
 
-          setVideoXY([vx, vy])
-          //   setLastXY([phaser.player.x, phaser.player.y])
-          // }
-        }
+        setVideoXY([vx, vy])
+        //   setLastXY([phaser.player.x, phaser.player.y])
+        // }
 
         requestAnimationFrame(animationFrame)
       }
       requestAnimationFrame(animationFrame)
+      return () => cancelAnimationFrame(animationFrame)
     },
     []
   )
@@ -66,13 +75,18 @@ function Html({ phaser, onResize }) {
           />
         </div>
       </div> */}
+
       <Cam
         camRef={vidRef}
         xy={videoXY}
         hat={'🧢'}
         anim={'walk'}
         flip={phaser.player.flipX}
+        onPlay={() => {
+          phaser.player.setVisible(!!stream)
+        }}
       />
+
     </div>
   )
 }
