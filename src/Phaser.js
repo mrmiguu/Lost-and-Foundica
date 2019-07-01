@@ -7,7 +7,8 @@ import atlasJson from './assets/atlas/atlas.json'
 
 function Phaser({ size: [width, height] }) {
   return new Promise(onScene => {
-    let g = new Game({
+
+    let config = {
       type: AUTO,
       width,
       height,
@@ -18,8 +19,9 @@ function Phaser({ size: [width, height] }) {
           gravity: { y: 1000 }
         }
       },
-    })
+    }
 
+    let g = new Game(config)
     g.scene.add('MyScene', MyScene, true, { onScene })
   })
 }
@@ -66,7 +68,7 @@ class MyScene extends Scene {
     // By default, everything gets depth sorted on the screen in the order we created things. Here, we
     // want the 'Above Player' layer to sit on top of the this.player, so we explicitly give it a depth.
     // Higher depths will sit on top of lower depth objects.
-    aboveLayer.setDepth(10)
+    // aboveLayer.setDepth(10)
 
     // Object layers in Tiled let you embed extra info into a map - like a spawn point or custom
     // collision shapes. In the tmx file, there's an object layer with a point named 'Spawn Point'
