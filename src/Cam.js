@@ -2,7 +2,7 @@ import React, { /* useRef, */ useEffect, useState } from 'react'
 // import styled from 'styled-components'
 import styles from './styles/Cam.module.scss'
 import cx from 'classnames'
-import { anims } from './const'
+// import { anims } from './const'
 
 let hats = {
   '🧢': styles.BilledHat,
@@ -13,34 +13,23 @@ let hats = {
 }
 
 function Cam({ camRef, xy, anim, hat, flip, muted, onPlay, onStream }) {
-  let { frames, rate } = anims[anim]
+  // let { frames, rate } = anims[anim]
 
-  let [frame, setFrame] = useState(0)
+  // let [frame, setFrame] = useState(0)
   let [isPlaying, setIsPlaying] = useState()
-  // let camRef = useRef()
-  // let stream = useMedia('user', true)
 
   // useEffect(() => {
-  //   camRef.current.srcObject = stream
+  //   setFrame(0)
 
-  //   if (stream) {
-  //     onStream && onStream(stream)
-  //   }
+  //   let i = setInterval(() =>
+  //     setFrame(frame =>
+  //       (frame + 1) % frames.length,
+  //     ),
+  //     rate
+  //   )
 
-  // }, [stream, onStream])
-
-  useEffect(() => {
-    setFrame(0)
-
-    let i = setInterval(() =>
-      setFrame(frame =>
-        (frame + 1) % frames.length,
-      ),
-      rate
-    )
-
-    return () => clearInterval(i)
-  }, [anim, frames, rate])
+  //   return () => clearInterval(i)
+  // }, [anim, frames, rate])
 
   return (
     <div

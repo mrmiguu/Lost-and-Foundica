@@ -86,10 +86,14 @@ class MyScene extends Scene {
       .setSize(30, 40)
       .setOffset(0, 24)
       .setVisible(false)
-    // .setMaxVelocity(1000, 1000)
-
-    // Watch the this.player and worldLayer for collisions, for the duration of the scene:
     this.physics.add.collider(this.player, worldLayer)
+
+    this.player2 = this.physics.add
+      .sprite(spawnPoint.x + 100, spawnPoint.y - 1110, 'atlas', 'misa-front')
+      .setSize(30, 40)
+      .setOffset(0, 24)
+      .setVisible(false)
+    this.physics.add.collider(this.player2, worldLayer)
 
     // Create the this.player's walking animations from the texture atlas. These are stored in the global
     // animation manager so any sprite can access them.
@@ -182,6 +186,9 @@ class MyScene extends Scene {
     let onGround = this.player.body.blocked.down
     let accel = onGround ? 600 : 50
 
+    let onGround2 = this.player2.body.blocked.down
+    let accel2 = onGround2 ? 600 : 50
+
     if (this.cursors.left.isDown) {
       this.player.setAccelerationX(-accel)
       this.player.setFlipX(true)
@@ -192,8 +199,22 @@ class MyScene extends Scene {
       this.player.setAccelerationX(0)
     }
 
+    if (this.cursors.left.isDown) {
+      this.player2.setAccelerationX(-accel2)
+      this.player2.setFlipX(true)
+    } else if (this.cursors.right.isDown) {
+      this.player2.setAccelerationX(accel2)
+      this.player2.setFlipX(false)
+    } else {
+      this.player2.setAccelerationX(0)
+    }
+
     if (onGround && this.cursors.up.isDown) {
       this.player.setVelocityY(-500)
+    }
+
+    if (onGround2 && this.cursors.up.isDown) {
+      this.player2.setVelocityY(-500)
     }
 
     if (onGround) {
@@ -206,6 +227,18 @@ class MyScene extends Scene {
       this.player.setMaxVelocity(300, 1000)
       this.player.anims.stop()
       this.player.anims.play('misa-right-walk', true)
+    }
+
+    if (onGround2) {
+      this.player2.setDrag(1000, 0)
+      this.player2.setMaxVelocity(300, 1000)
+      if (this.player2.body.velocity.x !== 0) this.player2.anims.play('misa-right-walk', true)
+      else this.player2.setTexture('atlas', 'misa-right')
+    } else {
+      this.player2.setDrag(0, 0)
+      this.player2.setMaxVelocity(300, 1000)
+      this.player2.anims.stop()
+      this.player2.anims.play('misa-right-walk', true)
     }
   }
 
