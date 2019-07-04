@@ -18,15 +18,35 @@ firebase.initializeApp({
 
 function useAuth() {
   let [user, setUser] = useState()
+  let [uids, setUids] = useState([])
 
   useEffect(
     () => {
       firebase.auth()
         .signInAnonymously()
-        .then(cred => setUser(cred.user))
+        .then(cred => {
+          let signInRef = firebase.database().ref(cred.user.uid)
+
+          signInRef.set(true)
+          signInRef
+            .onDisconnect()
+            .remove()
+
+          setUser(cred.user)
+        })
     },
     []
   )
+
+  useEffect(() => {
+    firebase.database().ref().on('value', snap => {
+      let uids = []
+      snap.forEach(item => {
+        uids = [...uids, item.key]
+      })
+      setUids(uids)
+    })
+  }, [])
 
   useEffect(
     () => {
@@ -35,13 +55,46 @@ function useAuth() {
     [user]
   )
 
-  return user
+  useEffect(
+    () => {
+      console.log(`uids ${JSON.stringify(uids)}`)
+    },
+    [uids]
+  )
+
+  return [user, uids]
 }
 
 function App() {
   let [size, setSize] = useState([window.innerWidth, window.innerHeight])
   let [phaser, setPhaser] = useState()
-  let user = useAuth()
+  let [user, uids] = useAuth()
+
+  useEffect(
+    () => {
+      let pairs = uids.map(uid => {
+        let ref = firebase.database().ref(uid)
+        let cb = snap => {
+          console.log(`${uid}@val ${JSON.stringify(snap.val())}`)
+        }
+        ref.on('value', cb)
+        setTimeout(() => ref.set({
+          xy: [
+            uid === user.uid ? phaser.player.x : phaser.player2.x,
+            uid === user.uid ? phaser.player.y : phaser.player2.y,
+          ]
+        }), 3000)
+        return [uid, cb]
+      })
+
+
+      return () => pairs.forEach(([uid, cb]) => {
+        firebase.database().ref(uid).off('value', cb)
+      })
+    },
+    [uids]
+  )
+
 
   if (!user) return null
 

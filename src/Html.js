@@ -75,6 +75,8 @@ function Html({ phaser, onResize }) {
       let vx2 = phaser.player2.x - phaser.camera.scrollX - 33 //- phaser.player2.width / 2
       let vy2 = phaser.player2.y - phaser.camera.scrollY - 70 //- phaser.player2.height / 2 + 13
       setVideo2XY([vx2, vy2])
+
+      // phaser.player.x = phaser.player.x - 1
     }
   )
 
