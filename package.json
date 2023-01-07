@@ -11,7 +11,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
-    "postcss-modules": "^1.4.1",
+    "postcss-modules": "^1.5.0",
     "sass": "^1.22.1"
   },
   "scripts": {
